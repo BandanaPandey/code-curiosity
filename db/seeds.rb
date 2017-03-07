@@ -8,6 +8,7 @@
 
 #Roles
 Role.find_or_create_by(name: 'Admin')
+Role.find_or_create_by(name: 'Sponsorer')
 
 if Rails.env.development?
   Goal.setup if Goal.count.zero?

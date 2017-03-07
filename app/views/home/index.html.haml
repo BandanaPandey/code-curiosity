@@ -24,6 +24,9 @@
       %a.btn.btn-primary.btn-lg{  href: omniauth_authorize_path(:user, :github) }
         %span.fa.fa-github
         Sign in with Github
+      %a.btn.btn-primary.btn-lg.sponsor{ href: new_sponsorer_session_path}
+        %span.fa.fa-sign-in
+        Sponsor
     .row.marketing
       .col-md-12.col-lg-offset-1.col-md-offset-1
         - INFO['home'].each_slice(2) do |data|

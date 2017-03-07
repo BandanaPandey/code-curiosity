@@ -12,25 +12,26 @@
             = link_to github_url(@user), target: '_blank' do
               %i.fa.fa-github
               = @user.github_handle
-          %ul.list-group.list-group-unbordered
-            %li.list-group-item
-              %b Points
-              %a.pull-right= format_points(@user.total_points)
-            %li.list-group-item
-              %b Commits
-              %a.pull-right= @user.commits_count
-            %li.list-group-item
-              %b Activities
-              %a.pull-right= @user.activities_count
-            %li.list-group-item
-              %b Goal
-              - if @user.current_subscription && @user.current_subscription.goal
-                = link_to @user.current_subscription.goal.name, trend_path, class: 'pull-right'
-              - elsif logged_in_user?
-                = link_to 'Set Goal', goals_path, class: 'pull-right'
-              - else
-                %span.pull-right Not set yet
-          - if logged_in_user?
+          - if @user.current_role !=  'Sponsorer'
+            %ul.list-group.list-group-unbordered
+              %li.list-group-item
+                %b Points
+                %a.pull-right= format_points(@user.total_points)
+              %li.list-group-item
+                %b Commits
+                %a.pull-right= @user.commits_count
+              %li.list-group-item
+                %b Activities
+                %a.pull-right= @user.activities_count
+              %li.list-group-item
+                %b Goal
+                - if @user.current_subscription && @user.current_subscription.goal
+                  = link_to @user.current_subscription.goal.name, trend_path, class: 'pull-right'
+                - elsif logged_in_user?
+                  = link_to 'Set Goal', goals_path, class: 'pull-right'
+                - else
+                  %span.pull-right Not set yet
+          - if logged_in_user? && @user.current_role !=  'Sponsorer'
             - if @user.able_to_redeem?
               = link_to '#', class: "btn btn-primary btn-block", data: { toggle: 'modal', target: '#redeem-modal .modal' } do
                 %b Redeem Points
@@ -38,41 +39,42 @@
               %span.tool-tip{"data-placement" => "top", "data-toggle" => "tooltip", :title => "Not met the redemption criteria"}
                 %span.btn.btn-primary.btn-block{:disabled => "disabled"} Redeem Points!
     .col-sm-9
-      .nav-tabs-custom
-        %ul.nav.nav-tabs
-          %li.active#rounds_tab_link
-            = link_to 'Rounds', '#rounds', data: { toggle: 'tab'}
-          - if logged_in_user?
-            %li#wallet_tab_link
-              = link_to 'Points History', '#wallet', data: { toggle: 'tab' }
-            %li#wallet_tab_link
-              = link_to 'Settings', '#settings', data: { toggle: 'tab' }
-        .tab-content
-          .tab-pane.active#rounds
-            - if @show_transactions
-              = render partial: 'share_button'
-            .row
-              .box-body
-                #users-chart-container
-            %table.table.table-bordered
-              %thead
-                %tr
-                  %th.col-xs-1 #
-                  %th Name
-                  %th.col-xs-2 Commits
-                  %th.col-xs-2 Activities
-                  %th.col-xs-2 Points
-              %tbody
-                = render partial: 'subscription', collection:  @subscriptions.reverse
-          - if logged_in_user?
-            .tab-pane#wallet
-              = render 'transactions'
-            .tab-pane#settings
-              = render 'settings'
-          %b 
+      - if @user.current_role !=  'Sponsorer'
+        .nav-tabs-custom
+          %ul.nav.nav-tabs
+            %li.active#rounds_tab_link
+              = link_to 'Rounds', '#rounds', data: { toggle: 'tab'}
             - if logged_in_user?
-              Info:
-              %i= t('transaction.points_credit_info')
+              %li#wallet_tab_link
+                = link_to 'Points History', '#wallet', data: { toggle: 'tab' }
+              %li#wallet_tab_link
+                = link_to 'Settings', '#settings', data: { toggle: 'tab' }
+          .tab-content
+            .tab-pane.active#rounds
+              - if @show_transactions
+                = render partial: 'share_button'
+              .row
+                .box-body
+                  #users-chart-container
+              %table.table.table-bordered
+                %thead
+                  %tr
+                    %th.col-xs-1 #
+                    %th Name
+                    %th.col-xs-2 Commits
+                    %th.col-xs-2 Activities
+                    %th.col-xs-2 Points
+                %tbody
+                  = render partial: 'subscription', collection:  @subscriptions.reverse
+            - if logged_in_user?
+              .tab-pane#wallet
+                = render 'transactions'
+              .tab-pane#settings
+                = render 'settings'
+            %b
+              - if logged_in_user?
+                Info:
+                %i= t('transaction.points_credit_info')
 - if logged_in_user?
   #redeem-modal
     .modal.fade

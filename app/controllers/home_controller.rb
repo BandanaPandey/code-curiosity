@@ -10,6 +10,9 @@ class HomeController < ApplicationController
     if user_signed_in?
       redirect_to dashboard_path
       return
+    elsif sponsorer_signed_in?
+      redirect_to sponsorers_path
+      return
     end
   end
 

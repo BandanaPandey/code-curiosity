@@ -1,5 +1,8 @@
 class DashboardController < ApplicationController
   include ContributionHelper
+
+  before_filter(:only => [:index]) { authorize! :index, :dashboard }
+
   before_action :authenticate_user!, except: [:webhook]
 
   def index

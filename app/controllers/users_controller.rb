@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   include ContributionHelper
+  load_and_authorize_resource
   before_action :authenticate_user!, except: [:show]
 
   def index
@@ -11,6 +12,8 @@ class UsersController < ApplicationController
     @show_transactions = current_user == @user
     contribution_data(@user)
     if @user
+      render layout: 'sponser' if current_user.current_role == 'Sponsorer'
+      return
       render layout: current_user ? 'application' : 'public'
     else
       redirect_to root_url, notice: 'Invalid user name'

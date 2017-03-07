@@ -28,6 +28,7 @@ class User
   field :github_handle,      type: String
   field :active,             type: Boolean, default: true
   field :is_judge,           type: Boolean, default: false
+  field :is_sponsorer,       type: Boolean, default: false
   field :name,               type: String
   field :provider,           type: String
   field :uid,                type: String
@@ -48,12 +49,14 @@ class User
   field :github_user_since,  type: Date
   field :repos_star_count,   type: Integer, default: 0
   field :auth_token,         type: String
+  field :current_role,       type: String
 
   # Background sync
   field :last_repo_sync_at,  type: Time
   field :last_gh_data_sync_at, type: Time
 
   belongs_to :goal
+  has_many :payments, as: :sponsor_payment, dependent: :destroy
   has_many :commits, dependent: :destroy
   has_many :activities, dependent: :destroy
   has_many :transactions, dependent: :destroy
@@ -64,7 +67,7 @@ class User
   has_many :group_invitations, dependent: :destroy
   has_and_belongs_to_many :repositories, class_name: 'Repository', inverse_of: 'users'
   has_and_belongs_to_many :judges_repositories, class_name: 'Repository', inverse_of: 'judges'
-  has_and_belongs_to_many :roles, inverse_of: nil
+  has_and_belongs_to_many :roles, class_name: 'Role', inverse_of: 'users'
   has_and_belongs_to_many :organizations
   has_and_belongs_to_many :groups, class_name: 'Group', inverse_of: 'members' 
   
@@ -78,6 +81,7 @@ class User
   scope :judges, -> { where(is_judge: true) }
 
   validates :email, :github_handle, :name, presence: true
+  #validates :address, presence: true, if: :retailer_other?
 
   after_create do |user|
     user.calculate_popularity unless user.auto_created
@@ -97,7 +101,8 @@ class User
       public_repos: auth.extra.raw_info.public_repos,
       auto_created: false,
       auth_token: User.encrypter.encrypt_and_sign(auth.credentials.token),
-      github_user_since: auth.extra.raw_info.created_at
+      github_user_since: auth.extra.raw_info.created_at,
+      current_role: 'User'
     })
 
     user.save

@@ -1,6 +1,7 @@
 class Admin::IgnoredFilesController < ApplicationController
   include IgnoredFileHelper
   
+  before_filter { authorize! :all, :ignored_files }
   before_action :authenticate_user!
   before_action :authenticate_admin!
   before_action :find_ignored_file, except: [:index, :new, :create, :update_ignore_field]

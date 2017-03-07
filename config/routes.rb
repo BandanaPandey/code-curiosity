@@ -1,17 +1,32 @@
 Rails.application.routes.draw do
 
+  get 'payments/new'
+
+  get 'payments/create'
+
   devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' },
     skip: [:sessions, :registrations, :passwords]
 
   devise_scope :user do
-    get 'sign_in', :to => 'home#index', :as => :new_user_session
+    #get 'sign_in', :to => 'home#index', :as => :new_user_session
     get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
   end
-
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
+  devise_for :sponsorers, skip: [:sessions, :registrations]
+
+  devise_scope :sponsorer do
+    get 'login' => 'devise/sessions#new', :as => :new_sponsorer_session
+    post 'login' => 'devise/sessions#create', :as => :sponsorer_session
+
+    get 'sign_up' => 'registrations#new', :as => :new_sponsorer_registration
+    post 'sign_up' => 'registrations#create', :as => :sponsorer_registration
+
+    get 'log_out', :to => 'devise/sessions#destroy', :as => :destroy_sponsorer_session
+  end
 
   resources :repositories, only: [:index]
+  resources :sponsorers, only: [:index]
 
   resources :users, only: [:index, :show, :destroy] do
     member do

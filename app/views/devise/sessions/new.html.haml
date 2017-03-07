@@ -1,0 +1,16 @@
+.clearfix
+  .col-md-3.col-md-offset-4
+    %a{:href => '/'}
+      %span
+        = image_tag 'logo-home.png'
+    - flash.each do |name, msg|
+      = content_tag :div, msg
+    = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+      = f.input :email
+      = f.input :password
+      = f.submit "Log in", class: "btn btn-primary btn-lg btn-block"
+    %br/ 
+    %a.btn.btn-primary{  href: omniauth_authorize_path(:user, :github, user: 'Sponsorer') }
+      %span.fa.fa-github
+      Sign in with Github
+    = render "devise/shared/links"

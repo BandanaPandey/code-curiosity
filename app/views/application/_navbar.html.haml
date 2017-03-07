@@ -20,6 +20,8 @@
             Trends
         - if current_user
           = render 'user_nav'
+        -elsif current_sponsorer
+          = link_to 'Sign out', destroy_sponsorer_session_path
         - else
           %li
             = link_to omniauth_authorize_path(:user, :github) do
