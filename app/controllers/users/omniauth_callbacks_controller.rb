@@ -6,7 +6,7 @@ class Users::OmniauthCallbacksController < ApplicationController
     @user = User.from_omniauth(request.env["omniauth.auth"])
 
     if request.env["omniauth.params"]["user"] == "Sponsorer"
-      @role = Role.find_by(name: 'Sponsorer')
+      @role = Role.find_or_create_by(name: 'Sponsorer')
       @user.roles << @role
       @user.set({is_sponsorer: true, current_role: @role.name})
       sign_in :user, @user

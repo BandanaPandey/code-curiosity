@@ -1,2 +1,20 @@
-%h1 Sponsers
-%p Have to add Payments here
+%section.content-header
+  %h1 
+    Welcome to CodeCuriosity!
+    = link_to '#', class: 'btn btn-success btn-social pull-right', data: {toggle: 'modal', target: '#payment-modal .modal'} do
+      %i.fa.fa-money
+      %b Pay
+%section.content
+  .row
+    .col-xs-12
+      .nav-tabs-custom
+        .tab-content
+          .tab-pane.active#payments_tab
+            .table-responsive.no-padding#payments
+              - if @payments.any?
+                = render 'payments_table'
+              - else
+                = render partial: 'callout_box', locals: { type: 'success', title: 'Keep Sponsoring', message: 'No payments yet'}
+#payment-modal
+  .modal.fade
+    = render 'payments/new_modal'

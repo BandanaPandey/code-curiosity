@@ -1,11 +1,11 @@
 class RegistrationsController < Devise::RegistrationsController
 
-  before_action :redirect_to_home
+  #before_action :redirect_to_home
 
   private
 
   def redirect_to_home
-    redierect_to root_path
+    redirect_to root_path
   end
 
   def sign_up_params

@@ -33,7 +33,7 @@ class Sponsorer
   # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   # field :locked_at,       type: Time
 
-  has_many :payments, as: :sponser_payment, dependent: :destroy
+  has_many :payments, as: :paymentable, class_name: 'Payment', dependent: :destroy
 
   validates :email, presence: true
 end

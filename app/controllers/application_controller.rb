@@ -7,6 +7,13 @@ class ApplicationController < ActionController::Base
   before_action :current_round
   helper_method :current_round
 
+  #fix for forbidden attributes error with CanCan
+  before_filter do
+    resource = controller_name.singularize.to_sym
+    method = "#{resource}_params"
+    params[resource] &&= send(method) if respond_to?(method, true)
+  end
+
   #check_authorization
   rescue_from CanCan::AccessDenied do |exception|
     flash[:warning] = exception.message

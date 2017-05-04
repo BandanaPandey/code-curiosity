@@ -7,11 +7,11 @@ class HomeController < ApplicationController
   before_action :multi_line_chart, only: [:index], unless: proc { user_signed_in? }
 
   def index
-    if user_signed_in?
-      redirect_to dashboard_path
-      return
-    elsif sponsorer_signed_in?
+    if sponsorer_signed_in? || (user_signed_in? && current_user.current_role == 'Sponsorer')
       redirect_to sponsorers_path
+      return
+    elsif user_signed_in?
+      redirect_to dashboard_path
       return
     end
   end

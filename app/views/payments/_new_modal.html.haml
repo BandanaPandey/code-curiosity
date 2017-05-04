@@ -1,0 +1,22 @@
+.modal-dialog
+  .modal-content
+    .modal-header
+      %button.close{'aria-label' => 'Close', 'data-dismiss' => 'modal', :type => 'button'}
+        %span{'aria-hidden' => 'true'} &times;
+      %h4.modal-title 
+        Sponsor
+    .modal-body
+      .nav-tabs-custom
+        %ul.nav.nav-tabs
+          %li.active
+            %a{href: '#one_time', data: { toggle: 'tab'} }
+              %i.fa.fa-money
+              OneTime Pay
+          %li
+            %a{href: '#monthly', data: { toggle: 'tab'} } 
+              %i.fa.fa-money
+              Monthly Pay
+        .tab-content
+          .tab-pane.active#one_time
+            = render 'payments/one_time', locals: {description: 'one_time'}
+          .tab-pane#monthly

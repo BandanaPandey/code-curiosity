@@ -6,7 +6,8 @@
           =  link_to user_path(current_user) do
             %i.fa.fa-user
             %span Profile
-        %li{class: is_active('index', 'activities')}
-          = link_to activities_path do
-            %i.fa.fa-cubes
-            %span Activities
+      - elsif current_sponsorer
+        %li{class: is_active(params[:action], 'sponsorers')}
+          =  link_to sponsorer_path(current_sponsorer) do
+            %i.fa.fa-user
+            %span Profile

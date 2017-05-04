@@ -56,7 +56,7 @@ class User
   field :last_gh_data_sync_at, type: Time
 
   belongs_to :goal
-  has_many :payments, as: :sponsor_payment, dependent: :destroy
+  has_many :payments, as: :paymentable, class_name: 'Payment', dependent: :destroy
   has_many :commits, dependent: :destroy
   has_many :activities, dependent: :destroy
   has_many :transactions, dependent: :destroy

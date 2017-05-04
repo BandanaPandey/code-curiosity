@@ -1,0 +1,12 @@
+%table.table.table-hover.table-bordered#payments
+  %thead
+    %tr
+      %th.col-xs-1 #
+      %th.col-xs-2 Date
+      %th.col-xs-2 Amount
+      %th.col-xs-2 Type
+      %th.col-xs-5 Description
+  %tbody
+    = render partial: 'payment', collection: @payments
+.pagination-container
+  = paginate @payments, remote: true

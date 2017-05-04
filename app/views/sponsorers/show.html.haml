@@ -1,0 +1,15 @@
+%section.content-header
+  %h1 Sponsorer Profile
+%section.content
+  .row
+    .col-sm-3
+      .box.box-primary
+        .box-body.box-profile
+          = @sponsorer.email
+          %ul.list-group.list-group-unbordered
+            %li.list-group-item
+              %b One Time Payments
+              -#%a.pull-right= 
+            %li.list-group-item
+              %b Monthly Payments
+              -#%a.pull-right= 
